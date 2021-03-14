@@ -35,7 +35,7 @@ def reporte():
     opcion_reporte = st.sidebar.selectbox(label= 'Elije uno de los conjuntos de datos disponibles', 
                          options= ['México', 'América Latina'])
     if opcion_reporte == 'México':
-        datos = carga(archivo= 'datos_kickstarter_México_preprocesados.csv')
+        datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
         st.dataframe(data= datos)
         reporte = ProfileReport(datos, explorative= True)
         if st.button(label= 'Generar reporte'):
