@@ -25,7 +25,7 @@ def carga(archivo):
     datos = pd.read_csv('Datos/' + archivo, index_col= 0)
     return datos
 
-datos_kickstarter = carga('datos_kickstarter_México_preprocesados.csv')
+datos_kickstarter = carga('datos_kickstarter_preprocesados.csv')
 
 tfidf_datos_kickstarter = TfidfVectorizer()
 matriz_tfidf_kickstarter = tfidf_datos_kickstarter.fit_transform(datos_kickstarter['Descripción (limpia)'])
@@ -112,7 +112,7 @@ def reporte():
     seleccion = st.sidebar.radio(label= 'Escoge una opción', options= ['Descripción general', 'Tabla de datos', 'Reporte general'])
     if seleccion == 'Descripción general':
         if opcion_reporte == 'México':
-            datos = carga(archivo= 'datos_kickstarter_México_preprocesados.csv')
+            datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
             st.dataframe(data= datos)
             st.subheader('Este conjunto de datos cuenta con las siguientes características generales:')
             st.info("""Cuenta con 11 variables, de las cuales 8 son categóricas (Nombre del proyecto, Creador(a), 
@@ -130,7 +130,7 @@ def reporte():
             valores nulos ni duplicados (se realizó un preprocesamiento de los datos y varias comprobaciones para su mejor legibilidad)""")
     if seleccion == 'Tabla de datos':
         if opcion_reporte == 'México':
-            datos = carga(archivo= 'datos_kickstarter_México_preprocesados.csv')
+            datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
             st.info('Tabulación cruzada: número de proyectos por país')
             st.dataframe(pd.crosstab(index= datos['Ubicación (por estado)'], columns= datos['Categoría']))
             st.info('Matriz de correlaciones')
@@ -147,7 +147,7 @@ def reporte():
             st.dataframe(data= datos.describe())
     if seleccion == 'Reporte general':
         if opcion_reporte == 'México':
-            datos = carga(archivo= 'datos_kickstarter_México_preprocesados.csv')
+            datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
             reporte = ProfileReport(datos, explorative= True)
             if st.button(label= 'Generar reporte'):
                 st_profile_report(reporte)
@@ -163,7 +163,7 @@ def eda():
     opcion_reporte = st.selectbox(label= 'Selecciona uno de los conjuntos de datos disponibles', 
                          options= ['México', 'América Latina'])
     if opcion_reporte == 'México':
-        datos = carga(archivo= 'datos_kickstarter_México_preprocesados.csv')
+        datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
         estados = datos['Ubicación (por estado)'].unique()
         estado = st.sidebar.selectbox(label= 'Selecciona un estado', options= estados)
         categorias = datos['Categoría'].unique()
@@ -235,7 +235,7 @@ def recomendacion_correlacion():
     opcion_reporte = st.selectbox(label= 'Seleciona uno de los conjuntos de datos disponibles', 
                                   options= ['México', 'América Latina'])
     if opcion_reporte == 'México':
-            datos = carga(archivo= 'datos_kickstarter_México_preprocesados.csv')
+            datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
             metricas_proyectos = datos.copy().groupby(by= ['Nombre del proyecto', 'Categoría', 'Ubicación (por estado)'])[['Recaudado', 'Objetivo', 
                                                 'Conteo de patrocinadores']].mean().sort_values(by= 'Objetivo', ascending= False)
             matriz_proyectos = datos.pivot_table(columns= ['Nombre del proyecto'])
@@ -296,7 +296,7 @@ def recomendacion_contenido():
         opcion_reporte = st.selectbox(label= 'Seleciona uno de los conjuntos de datos disponibles', 
                                   options= ['México', 'América Latina'])
         if opcion_reporte == 'México':
-            datos = carga(archivo= 'datos_kickstarter_México_preprocesados.csv')
+            datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
             if st.button(label= 'Generar nube de palabras'):
                 nube = hero.wordcloud(datos['Palabras clave'])
                 st.pyplot(nube)
