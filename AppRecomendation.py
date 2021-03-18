@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 @author: Jesús Eduardo Oliva Abarca
 """
@@ -45,9 +43,9 @@ def obtener_recomendacion_kickstarter(proyecto, coseno= coseno_similitud_kicksta
     puntajes_similitud = sorted(puntajes_similitud, key= lambda x: x[1], reverse= True)
     puntajes_similitud = puntajes_similitud[1:11]
     indices_proyectos = [i[0] for i in puntajes_similitud]
-    return st.dataframe(data= datos_kickstarter[['Nombre del proyecto', 'Categoría', 'Estatus', 'Palabras clave', 'Recaudado', 
+    return datos_kickstarter[['Nombre del proyecto', 'Categoría', 'Estatus', 'Palabras clave', 'Recaudado', 
                                                  'Objetivo', 'Conteo de patrocinadores']].iloc[indices_proyectos].sort_values(by= 'Conteo de patrocinadores', 
-                                                                                                                  ascending= False))
+                                                                                                                  ascending= False)
                                                                                                                  
 def obtener_recomendacion_ideame(proyecto, coseno= coseno_similitud_ideame):
     idx = indices_ideame[proyecto]
@@ -83,16 +81,16 @@ def bienvenida():
     que parte del enfoque de la analítica cultural de Lev Manovich, el cual aborda las aplicaciones de las herramientas, métodos y técnicas
     de la ciencia de datos para el estudio de conjuntos de datos culturales masivos.
     En esta aplicación, el usuario puede examinar los datos extraídos —a través de técnicas de "raspado de red" (o *web scraping*),
-    así como de la página *Web Robots* (https://webrobots.io/)— de las páginas de *Ideame* (https://www.idea.me/), y de *Kicstarter* 
+    así como del sitio *Web Robots* (https://webrobots.io/)— de las páginas de *Ideame* (https://www.idea.me/), y de *Kicstarter* 
     (https://www.kickstarter.com/mexico), para identificar patrones y tendencias relativas al micromecenazgo cultural y creativo en
-    México y América Latina.
-    Es importante indicar, que para la obtención de los conjuntos de datos en los que se basa esta aplicación, se respetaron
+    México y América Latina.""")
+    st.markdown("""Es importante indicar, que para la obtención de los conjuntos de datos en los que se basa esta aplicación, se respetaron
     los protocolos de estándar de exclusión de robots que aparecen en los archivos "robots.txt" de cada página. Además, es 
     pertinente indicar el reconocimiento a las páginas antes citadas, que son sitios confiables y seguros, dedicados a la financiación 
     de proyectos de diverso tipo. También, se reconoce el esfuerzo de creadoras y creadores, promotores y promotoras, gestoras y gestores, 
     y demás personas involucradas en la cultura, las artes y la creatividad, que optan por la alternativa del micromecenazgo para promover 
-    y continuar con sus actividades. 
-    Los datos empleados para esta aplicación son tratados con todo respeto y confidencialidad, y se solicita a todo usuario su
+    y continuar con sus actividades.""")
+    st.markdown("""Los datos empleados para esta aplicación son tratados con todo respeto y confidencialidad, y se solicita a todo usuario su
     apoyo para promover tanto las páginas de *Ideame* y *Kicstarter*, entre otras más dedicadas a la financiación colectiva, así como
     para difundir el trabajo de artistas, productores, diseñadores y demás profesionales de la cultura y de la creatividad.
     Un último aspecto a señalar es que ambos conjuntos de datos corresponden a los proyectos existentes en ambos sitios hasta el mes de
@@ -117,9 +115,9 @@ def reporte():
             st.subheader('Este conjunto de datos cuenta con las siguientes características generales:')
             st.info("""Cuenta con 11 variables, de las cuales 8 son categóricas (Nombre del proyecto, Creador(a), 
             Estatus, Ubicación (por estado), Descripción, Descripción (limpia) —descripción de cada proyecto 
-            luego del preprocesamiento de texto—, Palabras clave y Categoría) y 3 son numéricas ( Recaudado (monto en pesos mexicanos), 
+            luego del preprocesamiento de texto—, Palabras clave y Categoría) y 3 son numéricas (Recaudado (monto en pesos mexicanos), 
             Objetivo, y Conteo de patrocinadores). Además de 1842 observaciones, sin valores nulos ni duplicados (se realizó un 
-            preprocesamiento de los datos y varias comprobaciones para su mejor legibilidad""")
+            preprocesamiento de los datos y varias comprobaciones para su mejor legibilidad)""")
         elif opcion_reporte == 'América Latina':
             datos = carga(archivo= 'datos_ideame_preprocesados.csv')
             st.dataframe(data= datos)
@@ -159,11 +157,41 @@ def reporte():
                 
 def eda():
     with st.beta_expander(label= 'Descripción de la sección', expanded= True):
-        st.subheader('El análisis exploratorio de datos (*Exploratory Data Analysis*, o EDA), consiste en un examen de los atributos y características generales de un conjunto de datos, recurriendo a la exploración de sus métricas, o a la visualización de los datos mediante diferentes tipos de gráficos. En esta sección, el usuario podrá explorar los conjuntos de datos disponibles mediante la agrupación según espacio geopolítico (país, en América Latina, estado de la república, en México) y la categoría cultural que desea explorar, además de poder visualizar las métricas correspondientes')
+        st.subheader('El análisis exploratorio de datos (*Exploratory Data Analysis*, o EDA), consiste en un examen de los atributos y características generales de un conjunto de datos, recurriendo a la exploración de sus métricas, o a la visualización de los datos mediante diferentes tipos de gráficos. En esta sección, el usuario podrá explorar los conjuntos de datos disponibles mediante la visualización de las métricas correspondientes, además de poder examinar los datos agrupados según espacio geopolítico (país, en América Latina, estado de la república, en México) y la categoría cultural que desea explorar.')
     opcion_reporte = st.selectbox(label= 'Selecciona uno de los conjuntos de datos disponibles', 
                          options= ['México', 'América Latina'])
     if opcion_reporte == 'México':
         datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
+        
+        st.subheader('Los gráficos muestran las métricas correspondientes a todo el conjunto de datos')
+        opcion_metrica = st.radio('Selecciona', options= ['Recaudado', 'Objetivo', 'Conteo de patrocinadores']) 
+        
+        recaudado, objetivo, conteo_patrocinadores = st.beta_columns(3)
+        
+        
+        boton_uno, boton_dos = st.beta_columns(2)
+        with boton_uno:
+            if st.checkbox(label= 'Generar gráfico por categoría'):
+                st.info('Maximiza el gráfico para una mejor visualización')
+                plt.figure(figsize= (200, 60))
+                fig, ax = plt.subplots()
+                ax = sn.barplot(data= datos, x= opcion_metrica, y= 'Ubicación (por estado)', hue= 'Categoría', ci= None)
+                plt.gca().ticklabel_format(axis= 'x', style= 'plain', useOffset= False)
+                plt.xticks(rotation= 45)
+                plt.title('Correlación de proyectos por estado de la república según categoría')
+                st.pyplot(fig)
+        with boton_dos:
+            if st.checkbox(label= 'Generar gráfico por estatus del proyecto', key= 1):
+                st.info('Maximiza el gráfico para una mejor visualización')
+                plt.figure(figsize= (200, 60))
+                fig, ax = plt.subplots()
+                ax = sn.barplot(data= datos, x= opcion_metrica, y= 'Ubicación (por estado)', hue= 'Estatus', ci= None)
+                plt.gca().ticklabel_format(axis= 'x', style= 'plain', useOffset= False)
+                plt.xticks(rotation= 45)
+                plt.title('Correlación de proyectos por estado de la república según estatus')
+                st.pyplot(fig)
+        
+        st.subheader('La tabla que se muestra aquí corresponde a la agrupación seleccionada según los criterios elegidos en la barra lateral')
         estados = datos['Ubicación (por estado)'].unique()
         estado = st.sidebar.selectbox(label= 'Selecciona un estado', options= estados)
         categorias = datos['Categoría'].unique()
@@ -173,35 +201,64 @@ def eda():
                 seleccion_datos = datos.groupby(by= ['Ubicación (por estado)', 'Categoría']).get_group((estado, categoria))
                 st.dataframe(data= seleccion_datos)
                 st.info('El total de proyectos de ' + categoria.lower() + ' es de ' + str(len(seleccion_datos.index)))
+                if st.button(label= 'Generar gráfico', key= 2):
+                    st.info('Maximiza el gráfico para una mejor visualización')
+                    plt.figure(figsize= (200, 60))
+                    fig, ax = plt.subplots()
+                    ax = sn.pointplot(data= seleccion_datos, x= 'Recaudado', y= 'Objetivo', hue= 'Estatus')
+                    plt.gca().ticklabel_format(axis= 'y', style= 'plain', useOffset= False)
+                    plt.xticks(rotation= 45, fontsize= 6)
+                    plt.title('Relaciones entre niveles de las variables seleccionadas')
+                    st.pyplot(fig)
         except KeyError:
             st.warning('No existen proyectos de esta categoría')
-
-        st.subheader('Los gráficos muestran las métricas correspondientes a todo el conjunto de datos')
-        opcion_metrica = st.radio('Selecciona', options= ['Recaudado', 'Objetivo', 'Conteo de patrocinadores'])  
-        st.info('Maximice el gráfico para una mejor visualización')
-        boton_uno, boton_dos = st.beta_columns(2)
-                
-        with boton_uno:
-            if st.button(label= 'Generar gráfico por categoría'):
-                plt.figure(figsize= (200, 60))
-                fig, ax = plt.subplots()
-                ax = sn.barplot(data= datos, x= opcion_metrica, y= 'Ubicación (por estado)', hue= 'Categoría')
-                plt.gca().ticklabel_format(axis= 'x', style= 'plain', useOffset= False)
-                plt.xticks(rotation= 45)
-                plt.title('Correlación de proyectos por estado de la república según categoría')
-                st.pyplot(fig)
-        with boton_dos:
-            if st.button(label= 'Generar gráfico por estatus del proyecto', key= 1):
-                plt.figure(figsize= (200, 60))
-                fig, ax = plt.subplots()
-                ax = sn.barplot(data= datos, x= opcion_metrica, y= 'Ubicación (por estado)', hue= 'Estatus')
-                plt.gca().ticklabel_format(axis= 'x', style= 'plain', useOffset= False)
-                plt.xticks(rotation= 45)
-                plt.title('Correlación de proyectos por estado de la república según estatus')
-                st.pyplot(fig)
-                
+          
     elif opcion_reporte == 'América Latina':
         datos = carga(archivo= 'datos_ideame_preprocesados.csv')
+        
+        st.subheader('Los gráficos muestran las métricas correspondientes a todo el conjunto de datos')
+
+        st.subheader('Selecciona la métrica para el eje y del gráfico')
+        recaudacion, porcentaje, vistas, colaboradores = st.beta_columns(4)
+        with recaudacion:
+            if st.checkbox(label= 'Recaudación'):
+                plt.figure(figsize= (60, 30))
+                fig, ax = plt.subplots()
+                ax = sn.barplot(data= datos, x= 'País', y= 'Recaudación', hue= 'Categoría')
+                plt.gca().ticklabel_format(axis= 'y', style= 'plain', useOffset= False)
+                plt.xticks(rotation= 45)
+                plt.title('Correlación de proyectos por país según categoría')
+                st.pyplot(fig)
+        with porcentaje:
+            if st.checkbox(label= 'Porcentaje', key= 1):
+                plt.figure(figsize= (60, 30))
+                fig, ax = plt.subplots()
+                ax = sn.barplot(data= datos, x= 'País', y= 'Porcentaje', hue= 'Categoría')
+                plt.gca().ticklabel_format(axis= 'y', style= 'plain', useOffset= False)
+                plt.xticks(rotation= 45)
+                plt.title('Correlación de proyectos por país según categoría')
+                st.pyplot(fig)
+        with vistas:
+            if st.checkbox(label= 'Vistas', key= 2):
+                plt.figure(figsize= (60, 30))
+                fig, ax = plt.subplots()
+                ax = sn.barplot(data= datos, x= 'País', y= 'Vistas', hue= 'Categoría')
+                plt.gca().ticklabel_format(axis= 'y', style= 'plain', useOffset= False)
+                plt.xticks(rotation= 45)
+                plt.title('Correlación de proyectos por país según categoría')
+                st.pyplot(fig)
+        with colaboradores:
+            if st.checkbox(label= 'Colaboradores', key= 3):
+                plt.figure(figsize= (60, 30))
+                fig, ax = plt.subplots()
+                ax = sn.barplot(data= datos, x= 'País', y= 'Colaboradores', hue= 'Categoría')
+                plt.gca().ticklabel_format(axis= 'y', style= 'plain', useOffset= False)
+                plt.xticks(rotation= 45)
+                plt.title('Correlación de proyectos por país según categoría')
+                st.pyplot(fig)
+        st.info('Maximiza los gráficos para una mejor visualización')
+        
+        st.subheader('La tabla que se muestra aquí corresponde a la agrupación seleccionada según los criterios elegidos en la barra lateral')
         paises = datos['País'].unique()
         pais = st.sidebar.selectbox(label= 'Selecciona un país', options= paises)
         categorias = datos['Categoría'].unique()
@@ -211,22 +268,40 @@ def eda():
                 seleccion_datos = datos.groupby(by= ['País', 'Categoría']).get_group((pais, categoria))
                 st.dataframe(data= seleccion_datos)
                 st.info('El total de proyectos de ' + categoria.lower() + ' es de ' + str(len(seleccion_datos.index)))
+                
+                st.subheader('Selecciona la métrica para el eje y del gráfico')
+                porcentaje, vistas, colaboradores = st.beta_columns(3)
+                with porcentaje:
+                    if st.checkbox(label= 'Porcentaje'):
+                        plt.figure(figsize= (200, 60))
+                        fig, ax = plt.subplots()
+                        ax = sn.pointplot(data= seleccion_datos, x= 'Recaudación', y= 'Porcentaje')
+                        plt.gca().ticklabel_format(axis= 'y', style= 'plain', useOffset= False)
+                        plt.xticks(rotation= 45, fontsize = 6)
+                        plt.title('Relaciones entre las variables seleccionadas')
+                        st.pyplot(fig)
+                with vistas:
+                    if st.checkbox(label= 'Vistas', key= 1):
+                        plt.figure(figsize= (200, 60))
+                        fig, ax = plt.subplots()
+                        ax = sn.pointplot(data= seleccion_datos, x= 'Recaudación', y= 'Vistas')
+                        plt.gca().ticklabel_format(axis= 'y', style= 'plain', useOffset= False)
+                        plt.xticks(rotation= 45, fontsize = 6)
+                        plt.title('Relaciones entre las variables seleccionadas')
+                        st.pyplot(fig)
+                with colaboradores:
+                    if st.checkbox(label= 'Colaboradores', key= 2):
+                        plt.figure(figsize= (200, 60))
+                        fig, ax = plt.subplots()
+                        ax = sn.pointplot(data= seleccion_datos, x= 'Recaudación', y= 'Colaboradores')
+                        plt.gca().ticklabel_format(axis= 'y', style= 'plain', useOffset= False)
+                        plt.xticks(rotation= 45, fontsize = 6)
+                        plt.title('Relaciones entre las variables seleccionadas')
+                        st.pyplot(fig)
+                st.info('Maximiza los gráficos para una mejor visualización')
         except KeyError:
            st.warning('No existen proyectos de esta categoría')
-        
-        st.subheader('Los gráficos muestran las métricas correspondientes a todo el conjunto de datos')
-        opcion_metrica = st.radio('Selecciona', options= ['Recaudación', 'Porcentaje', 'Vistas', 'Colaboradores'])
-        
-        boton_grafico = st.button(label= 'Generar gráfico')
-        if boton_grafico:
-            plt.figure(figsize= (60, 30))
-            fig, ax = plt.subplots()
-            ax = sn.barplot(data= datos, x= 'País', y= opcion_metrica, hue= 'Categoría')
-            plt.gca().ticklabel_format(axis= 'y', style= 'plain', useOffset= False)
-            plt.xticks(rotation= 45)
-            plt.title('Correlación de proyectos por país según categoría')
-            st.pyplot(fig)
-            
+              
 def recomendacion_correlacion():
     formato = tkr.ScalarFormatter(useMathText= False)
     formato.set_scientific(False)
@@ -290,35 +365,65 @@ def recomendacion_correlacion():
                             según el proyecto elegido, y con base en la correlación entre las métricas.""")
     
 def recomendacion_contenido():
+    formato = tkr.ScalarFormatter(useMathText= False)
+    formato.set_scientific(False)
+    
     with st.beta_expander(label= 'Descripción de la sección', expanded= True):
         st.subheader('A diferencia de la sección anterior, el sistema de clasificación mostrado aquí se basa tanto en  en las métricas de los proyectos, así como en sus descripciones. Este sistema basado en contenido complementa las correlaciones de las métricas del anterior con los datos textuales empleados que describen o reseñan productos, eventos y servicios. En este caso, la premisa de identificar las similitudes entre los proyectos que tienen más vistas y más colaboradores.')
         
-        opcion_reporte = st.selectbox(label= 'Seleciona uno de los conjuntos de datos disponibles', 
-                                  options= ['México', 'América Latina'])
-        if opcion_reporte == 'México':
-            datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
-            if st.button(label= 'Generar nube de palabras'):
-                nube = hero.wordcloud(datos['Palabras clave'])
-                st.pyplot(nube)
+    opcion_reporte = st.selectbox(label= 'Seleciona uno de los conjuntos de datos disponibles', 
+                              options= ['México', 'América Latina'])
+    if opcion_reporte == 'México':
+        datos = carga(archivo= 'datos_kickstarter_preprocesados.csv')
+        if st.button(label= 'Generar nube de palabras'):
+            nube = hero.wordcloud(datos['Palabras clave'])
+            st.pyplot(nube)
             
-            nombres_proyectos = datos['Nombre del proyecto'].unique()
-            nombre_proyecto = st.sidebar.selectbox(label= 'Selecciona el proyecto', options= nombres_proyectos)
-            st.dataframe(data= datos[datos['Nombre del proyecto'].str.contains(nombre_proyecto)])
-            obtener_recomendacion_kickstarter(nombre_proyecto)
+        nombres_proyectos = datos['Nombre del proyecto'].unique()
+        nombre_proyecto = st.sidebar.selectbox(label= 'Selecciona el proyecto', options= nombres_proyectos)
+        st.dataframe(data= datos[datos['Nombre del proyecto'].str.contains(nombre_proyecto)])
+        st.dataframe(data= obtener_recomendacion_kickstarter(nombre_proyecto))
+        
+        if st.button(label= 'Generar nube de palabras', key= 1):
+            nube = hero.wordcloud(obtener_recomendacion_kickstarter(nombre_proyecto)['Palabras clave'])
+            st.pyplot(nube)
             
-        elif opcion_reporte == 'América Latina':
-            datos = carga(archivo= 'datos_ideame_preprocesados.csv')
-            if st.button(label= 'Generar nube de palabras'):
-                nube = hero.wordcloud(datos['Palabras clave'])
-                st.pyplot(nube)
+        boton_grafico = st.button(label= 'Generar gráfico', key= 2)
+        if boton_grafico:
+            plt.figure(figsize= (60, 30))
+            fig, ax = plt.subplots()
+            ax = sn.scatterplot(data= obtener_recomendacion_kickstarter(nombre_proyecto), x= 'Objetivo',
+                            y= 'Nombre del proyecto', hue= 'Categoría', style= 'Estatus')
+            plt.gca().ticklabel_format(axis= 'x', style= 'plain', useOffset= False)
+            plt.xticks(rotation= 45)
+            plt.title('Correlación de proyectos por país según categoría')
+            st.pyplot(fig)
             
-            nombres_proyectos = datos['Proyecto'].unique()
-            nombre_proyecto = st.sidebar.selectbox(label= 'Selecciona el proyecto', options= nombres_proyectos)
-            st.dataframe(data= datos[datos['Proyecto'].str.contains(nombre_proyecto)])
-            obtener_recomendacion_ideame(nombre_proyecto)
+    elif opcion_reporte == 'América Latina':
+        datos = carga(archivo= 'datos_ideame_preprocesados.csv')
+        if st.button(label= 'Generar nube de palabras'):
+            nube = hero.wordcloud(datos['Palabras clave'])
+            st.pyplot(nube)
+            
+        nombres_proyectos = datos['Proyecto'].unique()
+        nombre_proyecto = st.sidebar.selectbox(label= 'Selecciona el proyecto', options= nombres_proyectos)
+        st.dataframe(data= datos[datos['Proyecto'].str.contains(nombre_proyecto)])
+        obtener_recomendacion_ideame(nombre_proyecto)
         
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
