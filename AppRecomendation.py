@@ -215,6 +215,7 @@ def eda():
                     plt.xticks(rotation= 45, fontsize= 6)
                     plt.title('Relaciones entre niveles de las variables seleccionadas')
                     st.pyplot(fig)
+                    st.markdown('El gráfico permite examinar el éxito de un proyecto (basado en la recaudación y el objetivo planteado) según su categoría')
         except KeyError:
             st.warning('No existen proyectos de esta categoría')
           
@@ -261,6 +262,8 @@ def eda():
                 plt.xticks(rotation= 45)
                 plt.title('Correlación de proyectos por país según categoría')
                 st.pyplot(fig)
+        st.markdown("""Los gráficos permiten examinar el éxito de un proyecto (basado en la recaudación, las vistas, los colaboradores
+        y el porcentaje de recursos obtenidos) según su categoría""")
         st.info('Maximiza los gráficos para una mejor visualización')
         
         st.subheader('La tabla que se muestra aquí corresponde a la agrupación seleccionada según los criterios elegidos en la barra lateral')
@@ -397,7 +400,8 @@ def recomendacion_contenido():
                 nube = hero.wordcloud(obtener_recomendacion_kickstarter(nombre_proyecto)['Palabras clave'])
                 st.pyplot(nube)
                 st.markdown('La nube de palabras permite identificar los temas más recurrentes según las palabras clave de los proyectos relacionados conforme a sus métricas y descripciones')
-        
+                st.info('Maximiza los gráficos para una mejor visualización')
+                
         with opcion_dos:
             if st.checkbox(label= 'Generar gráfico', key= 2):
                 plt.figure(figsize= (60, 30))
@@ -408,6 +412,7 @@ def recomendacion_contenido():
                 plt.xticks(rotation= 45)
                 plt.title('Estatus de los proyectos relacionados según el objetivo de recaudación')
                 st.pyplot(fig)
+                st.info('Maximiza los gráficos para una mejor visualización')
             
     elif opcion_reporte == 'América Latina':
         datos = carga(archivo= 'datos_ideame_preprocesados.csv')
@@ -428,7 +433,8 @@ def recomendacion_contenido():
                 nube = hero.wordcloud(obtener_recomendacion_ideame(nombre_proyecto)['Palabras clave'])
                 st.pyplot(nube)
                 st.markdown('La nube de palabras permite identificar los temas más recurrentes según las palabras clave de los proyectos relacionados conforme a sus métricas y descripciones')
-        
+                st.info('Maximiza los gráficos para una mejor visualización')
+                
         with opcion_dos:
             if st.checkbox(label= 'Generar gráfico', key= 2):
                 plt.figure(figsize= (60, 30))
@@ -439,6 +445,7 @@ def recomendacion_contenido():
                 plt.xticks(rotation= 45)
                 plt.title('Relación entre recaudación y porcentaje de compleción de los proyectos relacionados')
                 st.pyplot(fig)
+                st.info('Maximiza los gráficos para una mejor visualización')
         
 if __name__ == '__main__':
     main()
