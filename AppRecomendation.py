@@ -262,8 +262,6 @@ def eda():
                 plt.xticks(rotation= 45)
                 plt.title('Correlación de proyectos por país según categoría')
                 st.pyplot(fig)
-        st.markdown("""Los gráficos permiten examinar el éxito de un proyecto (basado en la recaudación, las vistas, los colaboradores
-        y el porcentaje de recursos obtenidos) según su categoría""")
         st.info('Maximiza los gráficos para una mejor visualización')
         
         st.subheader('La tabla que se muestra aquí corresponde a la agrupación seleccionada según los criterios elegidos en la barra lateral')
@@ -306,6 +304,8 @@ def eda():
                         plt.xticks(rotation= 45, fontsize = 6)
                         plt.title('Relaciones entre las variables seleccionadas')
                         st.pyplot(fig)
+                st.markdown("""Los gráficos permiten examinar el éxito de un proyecto (basado en la recaudación, las vistas, los colaboradores
+                y el porcentaje de recursos obtenidos) según su categoría""")
                 st.info('Maximiza los gráficos para una mejor visualización')
         except KeyError:
            st.warning('No existen proyectos de esta categoría')
