@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 @author: Jesús Eduardo Oliva Abarca
 """
@@ -53,9 +55,9 @@ def obtener_recomendacion_ideame(proyecto, coseno= coseno_similitud_ideame):
     puntajes_similitud = sorted(puntajes_similitud, key= lambda x: x[1], reverse= True)
     puntajes_similitud = puntajes_similitud[1:11]
     indices_proyectos = [i[0] for i in puntajes_similitud]
-    return st.dataframe(data= datos_ideame[['Proyecto', 'Categoría', 'Palabras clave','Recaudación', 'Porcentaje', 'Vistas',
+    return datos_ideame[['Proyecto', 'Categoría', 'Palabras clave','Recaudación', 'Porcentaje', 'Vistas',
                                                  'Colaboradores']].iloc[indices_proyectos].sort_values(by= 'Vistas',
-                                                                                                                  ascending= False))
+                                                                                                                  ascending= False)
 
 
 def main():
@@ -84,6 +86,9 @@ def bienvenida():
     así como del sitio *Web Robots* (https://webrobots.io/)— de las páginas de *Ideame* (https://www.idea.me/), y de *Kicstarter* 
     (https://www.kickstarter.com/mexico), para identificar patrones y tendencias relativas al micromecenazgo cultural y creativo en
     México y América Latina.""")
+    st.markdown("""El propósito de esta aplicación es ofrecer a las interesadas e interesados una herramienta de análisis para la toma de
+                decisiones en lo que respecta a las posibilidades de financiamiento de sus proyectos culturales y creativos, así como en
+                lo relativo a las categorías y temas en los que exista una mayor probabilidad de éxito.""")
     st.markdown("""Es importante indicar, que para la obtención de los conjuntos de datos en los que se basa esta aplicación, se respetaron
     los protocolos de estándar de exclusión de robots que aparecen en los archivos "robots.txt" de cada página. Además, es 
     pertinente indicar el reconocimiento a las páginas antes citadas, que son sitios confiables y seguros, dedicados a la financiación 
@@ -378,40 +383,76 @@ def recomendacion_contenido():
         if st.button(label= 'Generar nube de palabras'):
             nube = hero.wordcloud(datos['Palabras clave'])
             st.pyplot(nube)
+            st.markdown('La nube de palabras permite identificar los temas más recurrentes según las palabras clave de todo el conjunto de datos')
             
         nombres_proyectos = datos['Nombre del proyecto'].unique()
         nombre_proyecto = st.sidebar.selectbox(label= 'Selecciona el proyecto', options= nombres_proyectos)
         st.dataframe(data= datos[datos['Nombre del proyecto'].str.contains(nombre_proyecto)])
         st.dataframe(data= obtener_recomendacion_kickstarter(nombre_proyecto))
         
-        if st.button(label= 'Generar nube de palabras', key= 1):
-            nube = hero.wordcloud(obtener_recomendacion_kickstarter(nombre_proyecto)['Palabras clave'])
-            st.pyplot(nube)
-            
-        boton_grafico = st.button(label= 'Generar gráfico', key= 2)
-        if boton_grafico:
-            plt.figure(figsize= (60, 30))
-            fig, ax = plt.subplots()
-            ax = sn.scatterplot(data= obtener_recomendacion_kickstarter(nombre_proyecto), x= 'Objetivo',
-                            y= 'Nombre del proyecto', hue= 'Categoría', style= 'Estatus')
-            plt.gca().ticklabel_format(axis= 'x', style= 'plain', useOffset= False)
-            plt.xticks(rotation= 45)
-            plt.title('Correlación de proyectos por país según categoría')
-            st.pyplot(fig)
+        opcion_uno, opcion_dos = st.beta_columns(2)
+        
+        with opcion_uno:
+            if st.checkbox(label= 'Generar nube de palabras', key= 1):
+                nube = hero.wordcloud(obtener_recomendacion_kickstarter(nombre_proyecto)['Palabras clave'])
+                st.pyplot(nube)
+                st.markdown('La nube de palabras permite identificar los temas más recurrentes según las palabras clave de los proyectos relacionados conforme a sus métricas y descripciones')
+        
+        with opcion_dos:
+            if st.checkbox(label= 'Generar gráfico', key= 2):
+                plt.figure(figsize= (60, 30))
+                fig, ax = plt.subplots()
+                ax = sn.scatterplot(data= obtener_recomendacion_kickstarter(nombre_proyecto), x= 'Objetivo',
+                                y= 'Nombre del proyecto', hue= 'Categoría', style= 'Estatus')
+                plt.gca().ticklabel_format(axis= 'x', style= 'plain', useOffset= False)
+                plt.xticks(rotation= 45)
+                plt.title('Estatus de los proyectos relacionados según el objetivo de recaudación')
+                st.pyplot(fig)
             
     elif opcion_reporte == 'América Latina':
         datos = carga(archivo= 'datos_ideame_preprocesados.csv')
         if st.button(label= 'Generar nube de palabras'):
             nube = hero.wordcloud(datos['Palabras clave'])
             st.pyplot(nube)
+            st.markdown('La nube de palabras permite identificar los temas más recurrentes según las palabras clave de todo el conjunto de datos')
             
         nombres_proyectos = datos['Proyecto'].unique()
         nombre_proyecto = st.sidebar.selectbox(label= 'Selecciona el proyecto', options= nombres_proyectos)
         st.dataframe(data= datos[datos['Proyecto'].str.contains(nombre_proyecto)])
-        obtener_recomendacion_ideame(nombre_proyecto)
+        st.dataframe(data= obtener_recomendacion_ideame(nombre_proyecto))
+        
+        opcion_uno, opcion_dos = st.beta_columns(2)
+        
+        with opcion_uno:
+            if st.checkbox(label= 'Generar nube de palabras', key= 1):
+                nube = hero.wordcloud(obtener_recomendacion_ideame(nombre_proyecto)['Palabras clave'])
+                st.pyplot(nube)
+                st.markdown('La nube de palabras permite identificar los temas más recurrentes según las palabras clave de los proyectos relacionados conforme a sus métricas y descripciones')
+        
+        with opcion_dos:
+            if st.checkbox(label= 'Generar gráfico', key= 2):
+                plt.figure(figsize= (60, 30))
+                fig, ax = plt.subplots()
+                ax = sn.scatterplot(data= obtener_recomendacion_ideame(nombre_proyecto), x= 'Recaudación',
+                                y= 'Porcentaje', hue= 'Categoría')
+                plt.gca().ticklabel_format(axis= 'x', style= 'plain', useOffset= False)
+                plt.xticks(rotation= 45)
+                plt.title('Relación entre recaudación y porcentaje de compleción de los proyectos relacionados')
+                st.pyplot(fig)
         
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+
+
+
+
 
 
 
