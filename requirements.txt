@@ -1,0 +1,9 @@
+pandas==1.2.3
+pandas_profiling==2.10.0
+numpy==1.19.3
+seaborn==0.11.1
+streamlit==0.78.0
+streamlit_pandas_profiling==0.1.1
+matplotlib==3.3.2
+texthero==1.0.9
+scikit_learn==0.24.1
