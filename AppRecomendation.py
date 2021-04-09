@@ -61,7 +61,7 @@ def obtener_recomendacion_ideame(proyecto, coseno= coseno_similitud_ideame):
 
 
 def main():
-    st.title('2.1. Caso de estudio: micromecenazgo cultural y creativo en México y América Latina')
+    st.title('Caso de estudio: micromecenazgo cultural y creativo en México y América Latina')
     opcion = st.sidebar.selectbox(label= 'Selecciona una opción',
                                   options= ['Bienvenida', 'Reporte general de datos',
                                             'Análisis Exploratorio (EDA: Exploratory Data Analysis',
