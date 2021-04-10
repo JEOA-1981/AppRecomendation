@@ -79,8 +79,6 @@ def main():
         recomendacion_contenido()
         
 def bienvenida():
-    st.markdown('## **Nota: esta aplicación se encuentra aún en fase de desarrollo, su uso recomendado es meramente como una herramienta de análisis**')
-    
     st.markdown("""Esta aplicación web ha sido desarrollada por Jesús Eduardo Oliva Abarca, como parte de un proyecto general de investigación 
     que parte del enfoque de la analítica cultural de Lev Manovich, el cual aborda las aplicaciones de las herramientas, métodos y técnicas
     de la ciencia de datos para el estudio de conjuntos de datos culturales masivos.
@@ -108,6 +106,7 @@ def bienvenida():
     
     st.markdown('https://github.com/JEOA-1981')
     st.markdown('https://www.linkedin.com/in/jes%C3%BAs-eduardo-oliva-abarca-78b615157/')
+    st.markdown('## **Nota: esta aplicación se encuentra aún en fase de desarrollo, su uso recomendado es meramente como una herramienta de análisis**')
     
 def reporte():
     with st.beta_expander(label= 'Descripción de la sección', expanded= True):
