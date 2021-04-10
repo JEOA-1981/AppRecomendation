@@ -106,6 +106,7 @@ def bienvenida():
     
     st.markdown('https://github.com/JEOA-1981')
     st.markdown('https://www.linkedin.com/in/jes%C3%BAs-eduardo-oliva-abarca-78b615157/')
+    st.markdown('#Nota: esta aplicación se encuentra aún en fase de desarrollo, su uso recomendado es meramente como una herramienta de análisis')
     
 def reporte():
     with st.beta_expander(label= 'Descripción de la sección', expanded= True):
